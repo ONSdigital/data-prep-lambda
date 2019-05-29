@@ -30,8 +30,8 @@ public class DataPrepLambdaHandler implements RequestHandler<HandlerRequest, Str
             "AND period = '%s' AND survey = '%s'";
     private static final String SEND_MESSAGE = "Attempting to invoke %s with the json string %s.";
 
-    private static final int QUESTION_CODE_ELEMENT = 1;
-    private static final int RESPONSE_ELEMENT = 2;
+    private static final int QUESTION_CODE_COLUMN = 1;
+    private static final int RESPONSE_COLUMN = 2;
 
     public String handleRequest(HandlerRequest request, Context context) {
         try {
@@ -55,8 +55,8 @@ public class DataPrepLambdaHandler implements RequestHandler<HandlerRequest, Str
 
             while(result.next()) {
                 WranglerRequestData dataElement = WranglerRequestData.builder()
-                        .questionCode(result.getString(QUESTION_CODE_ELEMENT))
-                        .response(result.getString(RESPONSE_ELEMENT))
+                        .questionCode(result.getString(QUESTION_CODE_COLUMN))
+                        .response(result.getString(RESPONSE_COLUMN))
                         .build();
 
                 data.add(dataElement);
@@ -85,7 +85,7 @@ public class DataPrepLambdaHandler implements RequestHandler<HandlerRequest, Str
 
             client.invoke(invokeRequest);
         } catch (JsonProcessingException e) {
-            log.error("An exception occured whilst attempting to prepare and send the request.", e);
+            log.error("An exception occurred whilst attempting to prepare and send the request.", e);
             throw e;
         }
     }
